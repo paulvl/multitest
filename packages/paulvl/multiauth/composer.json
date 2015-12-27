@@ -1,6 +1,6 @@
 {
     "name": "paulvl/multiauth",
-    "description": "Multi authorization packages for laravel 5.2",
+    "description": "Multi authorization package for laravel 5.2",
     "license": "MIT",
     "authors": [
         {
@@ -16,6 +16,9 @@
     "autoload": {
         "psr-4": {
             "MultiAuth\\": "src/"
-        }
+        },
+        "files": [
+            "files/helpers.php"
+        ]
     }
 }

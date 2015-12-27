@@ -69,9 +69,7 @@ trait AuthenticatesUsers
 
         $credentials = $this->getCredentials($request);
 
-        $auth = auth()->guard($this->guard());
-
-        if ($auth->attempt($credentials, $request->has('remember'))) {
+        if ($this->auth()->attempt($credentials, $request->has('remember'))) {
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
@@ -103,8 +101,7 @@ trait AuthenticatesUsers
         }
 
         if (method_exists($this, 'authenticated')) {
-            $auth = auth()->guard($this->guard());
-            return $this->authenticated($request, $auth->user());
+            return $this->authenticated($request, $this->auth()->user());
         }
 
         return redirect()->intended($this->redirectPath());
@@ -150,9 +147,7 @@ trait AuthenticatesUsers
      */
     public function logout()
     {
-        $auth = auth()->guard($this->guard());
-
-        $auth->logout();
+        $this->auth()->logout();
 
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
@@ -179,8 +174,8 @@ trait AuthenticatesUsers
         );
     }
 
-    protected function guard()
+    protected function auth()
     {
-        return property_exists($this, 'guard') ? $this->guard : config('auth.defaults.guard');
+        return Auth::guard( property_exists($this, 'guard') ? $this->guard : null );
     }
 }

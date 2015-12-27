@@ -57,10 +57,13 @@ trait RegistersUsers
             );
         }
 
-        $auth = auth();
-
-        $auth->login($this->create($request->all()));
+        $this->auth()->login($this->create($request->all()));
 
         return redirect($this->redirectPath());
+    }
+
+    protected function auth()
+    {
+        return Auth::guard( property_exists($this, 'guard') ? $this->guard : null );
     }
 }
